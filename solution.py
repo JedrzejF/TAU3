@@ -39,6 +39,8 @@ with open('test-A/out.tsv', 'w+', encoding='utf-8') as test_result:
                  test_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
              else:
                  rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
+	 if math.isnan(rest):
+            rest = 0
          test_result.write(':' + str(rest) + '\n')
 
 dev0 = open('dev-0/in.tsv', 'r', encoding='utf-8')
@@ -53,6 +55,8 @@ with open('dev-0/out.tsv', 'w+', encoding='utf-8') as dev0_result:
                  dev0_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
              else:
                  rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
+	 if math.isnan(rest):
+            rest = 0
          dev0_result.write(':' + str(rest) + '\n')
 
 dev1 = open('dev-1/in.tsv', 'r', encoding='utf-8')
@@ -67,4 +71,6 @@ with open('dev-1/out.tsv', 'w+', encoding='utf-8') as dev1_result:
                  dev1_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
              else:
                  rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
+	 if math.isnan(rest):
+            rest = 0
          dev1_result.write(':' + str(rest) + '\n')
