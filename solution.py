@@ -4,12 +4,13 @@ from collections import defaultdict
 from collections import OrderedDict
 import itertools
 import numpy as np
+import math
 
 dictionary = defaultdict(lambda: defaultdict(lambda: 0))
 
 train = open('train/train.tsv', 'r', encoding='utf-8')
 i = 0
-for x in train.readlines()[0:58000]:
+for x in train.readlines()[0:59050]:
     i += 1
     x = x.split("\t")
     x[4].lower()
@@ -24,8 +25,7 @@ for w1_w2 in dictionary:
         dictionary[w1_w2][w3] /= total_count
         dictionary[w1_w2][w3] = np.log(float(dictionary[w1_w2][w3]))
 
-with open('dictionary.txt', 'w', encoding='utf-8') as f:
-    print(dict(dictionary), file=f)
+import math
 
 test = open('test-A/in.tsv', 'r', encoding='utf-8')
 with open('test-A/out.tsv', 'w+', encoding='utf-8') as test_result:
@@ -33,14 +33,15 @@ with open('test-A/out.tsv', 'w+', encoding='utf-8') as test_result:
          x = x.split("\t")
          x = x[2].lower()
          x = x.split(" ")
+         rest = np.float(1)
          for w3 in dictionary[(x[-2], x[-1])]:
-             rest = 0
-             if dictionary[(x[-2], x[-1])][w3] > -6.3:
+             if dictionary[(x[-2], x[-1])][w3] > -6:
+                 rest -= math.e**(dictionary[(x[-2], x[-1])][w3])
                  test_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
-             else:
-                 rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
-	 if math.isnan(rest):
-            rest = 0
+         if rest < 0.000000001:
+             rest = -20
+         else:
+             rest = np.log(rest)
          test_result.write(':' + str(rest) + '\n')
 
 dev0 = open('dev-0/in.tsv', 'r', encoding='utf-8')
@@ -49,14 +50,15 @@ with open('dev-0/out.tsv', 'w+', encoding='utf-8') as dev0_result:
          x = x.split("\t")
          x = x[2].lower()
          x = x.split(" ")
+         rest = np.float(1)
          for w3 in dictionary[(x[-2], x[-1])]:
-             rest = 0
-             if dictionary[(x[-2], x[-1])][w3] > -6.3:
+             if dictionary[(x[-2], x[-1])][w3] > -6:
+                 rest -= math.e**(dictionary[(x[-2], x[-1])][w3])
                  dev0_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
-             else:
-                 rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
-	 if math.isnan(rest):
-            rest = 0
+         if rest < 0.000000001:
+             rest = -20
+         else:
+             rest = np.log(rest)
          dev0_result.write(':' + str(rest) + '\n')
 
 dev1 = open('dev-1/in.tsv', 'r', encoding='utf-8')
@@ -65,12 +67,13 @@ with open('dev-1/out.tsv', 'w+', encoding='utf-8') as dev1_result:
          x = x.split("\t")
          x = x[2].lower()
          x = x.split(" ")
+         rest = np.float(1)
          for w3 in dictionary[(x[-2], x[-1])]:
-             rest = 0
-             if dictionary[(x[-2], x[-1])][w3] > -6.3:
+             if dictionary[(x[-2], x[-1])][w3] > -6:
+                 rest -= math.e**(dictionary[(x[-2], x[-1])][w3])
                  dev1_result.write(str(w3).lower() + ':' + str(dictionary[(x[-2],x[-1])][w3])+ ' ')
-             else:
-                 rest += 2.71828183**(dictionary[(x[-2], x[-1])][w3])
-	 if math.isnan(rest):
-            rest = 0
+         if rest < 0.000000001:
+             rest = -20
+         else:
+             rest = np.log(rest)
          dev1_result.write(':' + str(rest) + '\n')
